@@ -10,7 +10,7 @@ const Navbar = ({ href }) => {
     const isActive = pathname === href;
 
     const options =
-        <div className="flex flex-col md:flex-row gap-2 md:z-10">
+        <div className="flex flex-col md:flex-row gap-2 md:z-100">
             <Link href="/" className={`${pathname === '/' ? 'bg-[#244D3F] text-white font-bold' : 'bg-gray-200'}  rounded-lg btn`}>
             <IoHomeOutline /> Home
             </Link>
@@ -22,7 +22,7 @@ const Navbar = ({ href }) => {
             </Link>
         </div>
     return (
-        <div className="bg-base-100 shadow-sm sticky top-0 right-0">
+        <div className="bg-white/50 backdrop-blur-md shadow-sm sticky top-0 right-0 z-20">
             <div className="navbar container mx-auto text-neutral">
                 <div className="navbar-start">
                     <div className="dropdown">
