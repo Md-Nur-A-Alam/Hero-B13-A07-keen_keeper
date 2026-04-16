@@ -11,7 +11,7 @@ const Footer = () => {
           </h2>
 
 
-          <p className="max-w-xl text-sm md:text-base text-white/70 leading-relaxed">
+          <p className=" text-sm md:text-base text-white/70 leading-relaxed font-thin">
             Your personal shelf of meaningful connections. Browse, tend, and 
             nurture the relationships that matter most.
           </p>
@@ -40,7 +40,7 @@ const Footer = () => {
         </div>
 
 
-        <div className="border-t border-white/10 my-8 w-full max-w-5xl mx-auto"></div>
+        <div className="border-t border-white/10 my-8 w-full mx-auto"></div>
 
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-white/60 max-w-5xl mx-auto">

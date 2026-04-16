@@ -2,6 +2,7 @@ import { Geist } from 'next/font/google'
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from '@/components/Footer/Footer';
+import ContextProvider from '@/provider/ContextProvider';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -22,7 +23,9 @@ export default function RootLayout({ children }) {
       <body>
         <Navbar></Navbar>
         <main className="container mx-auto min-h-[50vh]">
-          {children}
+          <ContextProvider>
+            {children}
+          </ContextProvider>
         </main>
         <Footer></Footer>
       </body>
