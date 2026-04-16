@@ -1,18 +1,31 @@
-import React from 'react';
-import friendsData from '@/../public/friends.json';
+'use client'
+import React, { use, useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Phone, MessageSquare, Video, Bell, Archive, Trash2 } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { MdAddCall } from 'react-icons/md';
+import { IoIosText } from 'react-icons/io';
+import { FaVideo } from 'react-icons/fa6';
+import { FriendContext } from '@/provider/ContextProvider';
 
-const FriendDetailsPage = async ({ params }) => {
-    const { friendId } = await params;
+
+const FriendDetailsPage = ({ params }) => {
+    const [friendsData, setFriendsData] = useState([]);
+    const { friendId } = use(params);
+    const { handleClickEventForCallTextVideo } = useContext(FriendContext);
+    useEffect(() => {
+        fetch("/friends.json")
+            .then(res => res.json())
+            .then(data => setFriendsData(data));
+    }, []);
+
     const friend = friendsData.find(f => f.id.toString() === friendId);
-    const formattedDate = new Date(friend.next_due_date).toLocaleDateString('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric'
-});
+    if (!friend) return <div className="p-10 text-center font-bold">Finding the friend</div>;
 
-    if (!friend) return <div className="p-10 text-center font-bold">Friend not found.</div>;
+
+    const formattedDate = new Date(friend.next_due_date).toLocaleDateString('en-US', {
+        month: 'short', day: '2-digit', year: 'numeric'
+    });
 
     return (
         <div className="mx-auto p-4 md:p-8 bg-[#F8FAFC]">
@@ -87,15 +100,15 @@ const FriendDetailsPage = async ({ params }) => {
                     <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
                         <h3 className="text-[#14532D] font-bold text-lg mb-6">Quick Check-In</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <button className="flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group">
+                            <button className="cursor-pointer flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group" onClick={() => handleClickEventForCallTextVideo(friend, "call")}>
                                 <Phone className="text-gray-700 mb-2 group-hover:text-green-600 transition-colors" size={28} />
                                 <span className="text-sm font-medium">Call</span>
                             </button>
-                            <button className="flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group">
+                            <button className="cursor-pointer flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group" onClick={() => handleClickEventForCallTextVideo(friend, "text")}>
                                 <MessageSquare className="text-gray-700 mb-2 group-hover:text-blue-600 transition-colors" size={28} />
                                 <span className="text-sm font-medium">Text</span>
                             </button>
-                            <button className="flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group">
+                            <button className="cursor-pointer flex flex-col items-center justify-center p-6 bg-[#F8FAFC] border border-gray-100 rounded-xl hover:bg-white hover:shadow-lg hover:border-transparent transition-all group" onClick={() => handleClickEventForCallTextVideo(friend, "video")}>
                                 <Video className="text-gray-700 mb-2 group-hover:text-purple-600 transition-colors" size={28} />
                                 <span className="text-sm font-medium">Video</span>
                             </button>

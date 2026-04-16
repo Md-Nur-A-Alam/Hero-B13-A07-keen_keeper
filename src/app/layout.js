@@ -4,6 +4,13 @@ import Navbar from "@/components/Navbar/Navbar";
 import Footer from '@/components/Footer/Footer';
 import ContextProvider from '@/provider/ContextProvider';
 
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
 const geist = Geist({
   subsets: ['latin'],
 })
@@ -28,6 +35,7 @@ export default function RootLayout({ children }) {
           </ContextProvider>
         </main>
         <Footer></Footer>
+        <ToastContainer />
       </body>
     </html>
   );
