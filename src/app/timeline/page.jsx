@@ -1,4 +1,5 @@
 'use client'
+import NoData from "@/components/NoData/NoData";
 import TimeLineCard from "@/components/TimelineCard/TimeLineCard";
 import { FriendContext } from "@/provider/ContextProvider";
 import { useContext, useMemo, useState } from "react";
@@ -65,12 +66,7 @@ const TimelinePage = () => {
 
             <div className="my-5 space-y-2">
                 {timeLineList.length === 0 ? (
-                    <div className="min-h-[30vh] w-full rounded-2xl p-20 shadow-md bg-base-200 text-gray-400">
-                        <div>
-                            <TbFaceIdError className="text-9xl mx-auto"></TbFaceIdError>
-                        </div>
-                        <p className="text-center text-4xl mt-10">No entries found.</p>
-                    </div>
+                    <NoData></NoData>
                 ) : (
                 <div className="flex flex-col gap-5">
                     {timeLineList.map((item, index) => (
