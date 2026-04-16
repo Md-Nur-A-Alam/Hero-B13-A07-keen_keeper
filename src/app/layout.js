@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       className={`${geist.className} h-full antialiased`}
       data-theme="light"
     >
-      <body>
+      <body suppressHydrationWarning>
         <Navbar></Navbar>
         <main className="container mx-auto min-h-[50vh]">
           <ContextProvider>

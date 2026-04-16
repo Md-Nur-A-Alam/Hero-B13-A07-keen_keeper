@@ -5,6 +5,8 @@ import { useContext, useMemo, useState } from "react";
 import { BiMessageDots } from "react-icons/bi";
 import { FaCaretDown } from "react-icons/fa6";
 import { IoCall, IoTime, IoVideocam } from "react-icons/io5";
+import { TbFaceIdError } from "react-icons/tb";
+
 
 const TimelinePage = () => {
     const { actionList } = useContext(FriendContext);
@@ -63,7 +65,12 @@ const TimelinePage = () => {
 
             <div className="my-5 space-y-2">
                 {timeLineList.length === 0 ? (
-                    <p className="text-gray-400 text-center">No entries found.</p>
+                    <div className="min-h-[30vh] w-full rounded-2xl p-20 shadow-md bg-base-200 text-gray-400">
+                        <div>
+                            <TbFaceIdError className="text-9xl mx-auto"></TbFaceIdError>
+                        </div>
+                        <p className="text-center text-4xl mt-10">No entries found.</p>
+                    </div>
                 ) : (
                 <div className="flex flex-col gap-5">
                     {timeLineList.map((item, index) => (

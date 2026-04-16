@@ -20,7 +20,8 @@ const FriendDetailsPage = ({ params }) => {
     }, []);
 
     const friend = friendsData.find(f => f.id.toString() === friendId);
-    if (!friend) return <div className="p-10 text-center font-bold">Finding the friend</div>;
+    if (!friend) return <div className="p-10 text-center font-bold">
+        <span className="loading loading-spinner text-error w-15 mt-40"></span></div>;
 
 
     const formattedDate = new Date(friend.next_due_date).toLocaleDateString('en-US', {
@@ -53,7 +54,7 @@ const FriendDetailsPage = ({ params }) => {
                             {friend.tags[0] || 'GENERAL'}
                         </span>
                         <p className="text-gray-500 italic text-sm mb-1">{friend.bio}</p>
-                        <p className="text-gray-400 text-xs">Preferred: {friend.email.split('@')[0]}</p>
+                        <p className="text-gray-400 text-xs">Preferred: {friend.email}</p>
                     </div>
 
 

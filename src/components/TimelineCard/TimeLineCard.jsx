@@ -14,7 +14,7 @@ const timelineCard = ({ item }) => {
 
     return (
         <div className="group p-4 flex items-center gap-6 w-full rounded-2xl bg-base-100 shadow-sm border border-transparent hover:border-primary/20 hover:shadow-md hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer">
-            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-base-200 flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-110">
+            <div className="shrink-0 w-14 h-14 rounded-full bg-base-200 flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-110">
                 <Image src={getIcon()} width={32} height={32} alt="action_type" className="object-contain"></Image>
             </div>
 
