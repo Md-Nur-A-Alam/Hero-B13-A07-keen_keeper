@@ -17,11 +17,7 @@ const geist = Geist({
 
 export const metadata = {
   title: "KeenKeeper",
-  description: "Keep Your Friendships Alive",
-  icons: {
-  icon: '/fd.jpg',
-  apple: '/apple-icon.png',
-}
+  description: "Keep Your Friendships Alive"
 };
 
 
