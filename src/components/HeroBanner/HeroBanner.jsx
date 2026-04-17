@@ -1,12 +1,14 @@
 
-const dashboardData = {
-  totalFriends: 10,
-  onTrack: 3,
-  needAttention: 6,
-  interactionsThisMonth: 12,
-};
+const HeroBanner = async () => {
+    const res = await fetch('http://localhost:3000/friends.json');
+    const friends = await res.json();
 
-const HeroBanner = () => {
+    const totalFriends = friends.length;
+    const onTrack = friends.filter(f => f.status === 'on-track').length;
+    const needAttention = friends.filter(f => f.status === 'overdue').length;
+    const interactionsThisMonth = friends.filter(f => f.days_since_contact <= 30).length;
+    console.log(totalFriends, onTrack, needAttention, interactionsThisMonth);
+
     return (
         <div className="py-20 px-4 md:px-0 shadow-sm">
             <div className="container mx-auto text-center">
@@ -21,22 +23,22 @@ const HeroBanner = () => {
                 </button>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-10 lg:px-16">
                     <div className="stat bg-base-100 shadow-xl rounded-box p-8 flex flex-col items-center justify-center text-center transition duration-300 hover:scale-110">
-                        <div className="text-4xl text-[#1F2937] font-bold">{dashboardData.totalFriends}</div>
+                        <div className="text-4xl text-[#1F2937] font-bold">{totalFriends}</div>
                         <div className="text-xl text-gray-600 mt-3 font-medium">Total Friends</div>
                     </div>
-                    
+
                     <div className="stat bg-base-100 shadow-xl rounded-box p-8 flex flex-col items-center justify-center text-center transition duration-300 hover:scale-110">
-                        <div className="text-4xl text-[#1F2937] font-bold">{dashboardData.onTrack}</div>
+                        <div className="text-4xl text-[#1F2937] font-bold">{onTrack}</div>
                         <div className="text-xl text-gray-600 mt-3 font-medium">On Track</div>
                     </div>
 
                     <div className="stat bg-base-100 shadow-xl rounded-box p-8 flex flex-col items-center justify-center text-center transition duration-300 hover:scale-110">
-                        <div className="text-4xl text-[#1F2937] font-bold">{dashboardData.needAttention}</div>
+                        <div className="text-4xl text-[#1F2937] font-bold">{needAttention}</div>
                         <div className="text-xl text-gray-600 mt-3 font-medium">Need Attention</div>
                     </div>
 
                     <div className="stat bg-base-100 shadow-xl rounded-box p-8 flex flex-col items-center justify-center text-center transition duration-300 hover:scale-110">
-                        <div className="text-4xl text-[#1F2937] font-bold">{dashboardData.interactionsThisMonth}</div>
+                        <div className="text-4xl text-[#1F2937] font-bold">{interactionsThisMonth}</div>
                         <div className="text-xl text-gray-600 mt-3 font-medium">Interactions This Month</div>
                     </div>
                 </div>

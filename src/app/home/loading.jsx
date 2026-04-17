@@ -1,10 +1,9 @@
-
-const homeLoading = () => {
+const HomeLoading = () => {
     return (
-        <div className="text-5xl">
-            <span className="loading loading-spinner text-error text-9xl"></span>
+        <div className="flex justify-center items-center min-h-[50vh]">
+            <span className="loading loading-spinner text-error w-16"></span>
         </div>
     );
 };
 
-export default homeLoading;
+export default HomeLoading;

@@ -1,240 +1,228 @@
-# 👥 KeenKeeper — Keep Your Friendships Alive
+# PH B13 A07 Project: KeenKeeper
+# Prepared By       : Md. Nur A Alam
 
-### 📅 Deadline For 60 marks: 17 April 2026 | ⏱️11:59PM
-### 📅 Deadline for 30 marks: Any time after 17 April 2026
+> **A Personal Friendship Relationship Manager** — track, log, and analyze the connections that matter most.
 
----
+<div align="center">
 
-## 🐣 Basic Requirements (Must Do for Everyone)
+![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-Context_API-61DAFB?style=for-the-badge&logo=react)
+![JavaScript](https://img.shields.io/badge/JavaScript-JSX-F7DF1E?style=for-the-badge&logo=javascript)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
+![DaisyUI](https://img.shields.io/badge/DaisyUI-Component_Library-5A0EF8?style=for-the-badge)
+![Recharts](https://img.shields.io/badge/Recharts-Analytics-22B5BF?style=for-the-badge)
 
-- Your app must work on **all screen sizes** — mobile, tablet, and desktop
-- Make at least **8 Git commits** with clear, meaningful messages (e.g., "added friend card component")
-- Your app must run without any errors after deployment
-- Add a nice `README.md` file with your project name, description, technologies used, and features
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://hero-b13-a07-keen-keeper.vercel.app)
 
----
+</div>
 
-## 🔧 Main Requirements — 50 Marks
-
----
-
-### 1. 🔝 Navbar
-
-**Navbar:**
-- Design the Navbar exactly like the Figma design
-- Put your **logo on the left side**
-- Put your **navigation links on the right side** — links are: **Home**, **Timeline**, **Stats**
-- Each link should have an **icon** next to the text
-- The **active page link** should look different (highlighted), just like the Figma design
+> 🌐 **Live:** [hero-b13-a07-keen-keeper.vercel.app](https://hero-b13-a07-keen-keeper.vercel.app)
 
 ---
 
-### 2. 🎯 Banner
+## 📖 Overview
 
-**Banner Section (Top of the Home page):**
-- Show a centered **title** and **subtitle**
-- Add a **button with an icon** (e.g., "Add a Friend")
-- Show **4 summary cards below the banner**, following the Figma design
+**KeenKeeper** is a fully client-side Personal Relationship Manager (PRM) designed for individuals who want to stay intentional about their friendships. Browse a curated friend list, view detailed profiles with contact metrics, and log every Call, Text, or Video interaction — all visualized through a live analytics dashboard.
+
+> ⚡ No backend. No database. All state lives in React Context for the duration of your browser session.
 
 ---
 
-### 3. 📋 Friend Data (JSON File)
+## ✨ Key Features
 
-Create a file (e.g., `friends.json`) with **6–10 realistic friend profiles**.  
-Each friend object must have these fields:
-```json
+### 🗂️ Interaction Logging & Global Context
+Log **Call**, **Text**, or **Video** interactions directly from a friend's profile page. Each interaction is captured with the friend's name, action type, date, and timestamp — instantly pushed into a global `actionList` via React Context. A `react-toastify` notification confirms every logged event in real time.
+
+**Files:** `src/provider/ContextProvider.jsx` · `src/app/friends/[friendId]/page.jsx`
+
+---
+
+### 📊 Friendship Analytics — Recharts Pie Chart
+The **Stats** page reads from `actionList` in Context, tallies interactions by type, and renders a responsive **Recharts donut chart** with distinct segments for Call, Text, and Video. When no interactions exist, a polished `<NoData>` empty-state component is shown instead.
+
+**Files:** `src/app/stats/page.jsx` · `src/components/NoData/NoData.jsx`
+
+---
+
+### 🎨 Animated 404 Page
+Unmatched routes deliver a fully interactive 404 experience featuring:
+- **Canvas particle system** rendered with `useRef` + `useEffect`
+- **CSS glitch/shimmer** text animation on the "404" number
+- **Orbiting ring** and **mouse-parallax** effects
+- **Floating emoji particles** and a **glassmorphism CTA card**
+
+**File:** `src/app/not-found.jsx`
+
+---
+
+## 🛠️ Technology Stack
+
+| Technology | Role |
+|---|---|
+| **Next.js** | App Router framework · SSR/SSG · routing · image optimisation |
+| **React** | Component model · Context API for global state |
+| **JavaScript (JSX)** | Primary language (no TypeScript) |
+| **Tailwind CSS** | Utility-first styling via `@import "tailwindcss"` |
+| **DaisyUI** | Tailwind component plugin — `btn`, `navbar`, `card`, `stat`, etc. |
+| **Recharts** | Donut pie chart on the Stats page |
+| **react-icons** | Icon sets — `IoHomeOutline`, `RiTimeLine`, `TbFaceIdError`, etc. |
+| **lucide-react** | Icons on the friend detail page — `Phone`, `Video`, etc. |
+| **react-toastify** | Toast notifications on interaction events |
+| **ESLint** | Linting via `eslint-config-next` |
+| **babel-plugin-react-compiler** | React Compiler Babel plugin (`reactCompiler: true` in `next.config`) |
+
+**Deployment Target:** Vercel (implied by Next.js; no adapter configured)  
+**State Management:** `FriendContext` in `ContextProvider.jsx`  
+**Data Source:** `public/friends.json` (static JSON)
+
+---
+
+## 🏗️ Architecture
+
+```
+Browser
+│
+├── Navbar (sticky, active-link via usePathname)
+│
+├── [Route Segments — App Router]
+│   │
+│   ├── /  →  /home/page.jsx  (SSG Server Component)
+│   │           ├── HeroBanner  (hardcoded stats, Server)
+│   │           └── Friends     (async Server Component, JSON import)
+│   │                 └── FriendCard × 12  (Server, links to /friends/[id])
+│   │
+│   ├── /friends/[friendId]/page.jsx  (CSR 'use client')
+│   │           ├── reads params via use(params)
+│   │           ├── fetches /friends.json client-side
+│   │           └── calls handleClickEventForCallTextVideo → Context
+│   │
+│   ├── /timeline/page.jsx  (CSR 'use client')
+│   │           ├── reads actionList from FriendContext
+│   │           ├── useMemo sort + filter
+│   │           └── TimeLineCard × N  |  NoData (if empty)
+│   │
+│   ├── /stats/page.jsx  (CSR 'use client')
+│   │           ├── reads actionList from FriendContext
+│   │           └── Recharts PieChart  |  NoData (if empty)
+│   │
+│   └── /*  →  not-found.jsx  (CSR 'use client', canvas + CSS animations)
+│
+├── Footer
+│
+└── Global State
+      └── ContextProvider (FriendContext)
+            ├── actionList: InteractionEntry[]
+            └── handleClickEventForCallTextVideo(friend, action_type)
+```
+
+### Data Flow
+
+```
+public/friends.json ──import──►  Friends component  (build time)
+public/friends.json ──fetch()──► /friends/[friendId] (runtime, client)
+User interaction    ──────────►  ContextProvider  ──► /timeline + /stats
+```
+
+---
+
+## 🧩 Component Inventory
+
+| Component | File Path | Type | Responsibility |
+|---|---|---|---|
+| `RootLayout` | `src/app/layout.js` | Server | HTML shell · font · Navbar · Footer · ContextProvider · ToastContainer |
+| `HomePage` | `src/app/home/page.jsx` | Server (async) | Composes HeroBanner + Friends |
+| `HomeLoading` | `src/app/home/loading.jsx` | Server | Suspense skeleton + custom spinner |
+| `FriendDetailsPage` | `src/app/friends/[friendId]/page.jsx` | **Client** | Friend view · fetch + stats + CTA buttons |
+| `TimelinePage` | `src/app/timeline/page.jsx` | **Client** | Sorted, filtered interaction log |
+| `StatsPage` | `src/app/stats/page.jsx` | **Client** | Recharts donut chart of interaction types |
+| `NotFound` | `src/app/not-found.jsx` | **Client** | Animated 404 · canvas · CSS glitch · parallax |
+| `Navbar` | `src/components/Navbar/Navbar.jsx` | **Client** | Sticky nav · active-link highlighting · mobile dropdown |
+| `HeroBanner` | `src/components/HeroBanner/HeroBanner.jsx` | Server | Hero section with hardcoded stat cards |
+| `Friends` | `src/components/Friends/Friends.jsx` | Server (async) | Renders FriendCard grid from imported JSON |
+| `FriendCard` | `src/components/Friends/FriendCard/FriendCard.jsx` | Server | Single friend card · links to detail page |
+| `TimeLineCard` | `src/components/TimelineCard/TimeLineCard.jsx` | Server | Single timeline entry with icon · name · date · time |
+| `NoData` | `src/components/NoData/NoData.jsx` | Server | Empty-state UI with error icon and message |
+| `Footer` | `src/components/Footer/Footer.jsx` | Server | Brand footer with social + policy links |
+| `ContextProvider` | `src/provider/ContextProvider.jsx` | **Client** | Global state: `actionList` + `handleClickEventForCallTextVideo` |
+
+---
+
+## 🗺️ Routing Strategy
+
+**Router:** Next.js App Router (v13+)
+
+| Route | File | Rendering | Description |
+|---|---|---|---|
+| `/` | `src/app/page.js` | CSR | Root — delegates to `/home/page.jsx` |
+| `/home` | `src/app/home/page.jsx` | **SSG** | Landing page: HeroBanner + Friends grid |
+| `/friends/[friendId]` | `src/app/friends/[friendId]/page.jsx` | **CSR** | Friend detail view · reads `params.friendId` via `use(params)` |
+| `/timeline` | `src/app/timeline/page.jsx` | **CSR** | Filterable list of logged interactions from Context |
+| `/stats` | `src/app/stats/page.jsx` | **CSR** | Donut pie chart of Call / Text / Video counts |
+| `/*` (unmatched) | `src/app/not-found.jsx` | **CSR** | Animated 404 page — catches all unknown routes |
+| `/home` (loading) | `src/app/home/loading.jsx` | Server | Suspense fallback skeleton during navigation |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.js                        # RootLayout — global shell
+│   ├── page.js                          # Root redirect → /home
+│   ├── home/
+│   │   ├── page.jsx                     # HomePage (SSG)
+│   │   └── loading.jsx                  # Suspense skeleton
+│   ├── friends/
+│   │   └── [friendId]/
+│   │       └── page.jsx                 # Friend detail (CSR)
+│   ├── timeline/
+│   │   └── page.jsx                     # Timeline (CSR)
+│   ├── stats/
+│   │   └── page.jsx                     # Stats / Analytics (CSR)
+│   └── not-found.jsx                    # Animated 404 (CSR)
+│
+├── components/
+│   ├── Navbar/Navbar.jsx
+│   ├── HeroBanner/HeroBanner.jsx
+│   ├── Footer/Footer.jsx
+│   ├── Friends/
+│   │   ├── Friends.jsx
+│   │   └── FriendCard/FriendCard.jsx
+│   ├── TimelineCard/TimeLineCard.jsx
+│   └── NoData/NoData.jsx
+│
+└── provider/
+    └── ContextProvider.jsx              # Global FriendContext
+```
+
+---
+
+## ⚙️ Global State
+
+**Context:** `FriendContext` — provided by `ContextProvider.jsx`
+
+```js
+// Shape of a single interaction entry
 {
-  "id": 1,
-  "name": "John Doe",
-  "picture": "https://example.com/photo.jpg",
-  "email": "john@example.com",
-  "days_since_contact": 12,
-  "status": "overdue",
-  "tags": ["college", "close friend"],
-  "bio": "Met in university. Love hiking together.",
-  "goal": 14,
-  "next_due_date": "2025-07-20"
+  friendName: string,
+  actionType: "Call" | "Text" | "Video",
+  date: string,   // e.g. "2024-05-12"
+  time: string    // e.g. "14:32"
 }
 ```
 
-> ⚠️ Use meaningful data. No "lorem ipsum" or fake placeholder text.  
-> The `status` field can only be one of: `"overdue"` | `"almost due"` | `"on-track"`  
-> 💡 You may use an AI tool to help generate the JSON data.
+**Exposed values:**
+
+| Value | Type | Description |
+|---|---|---|
+| `actionList` | `InteractionEntry[]` | All logged interactions for the session |
+| `handleClickEventForCallTextVideo` | `(friend, action_type) => void` | Logs an interaction + fires a toast notification |
 
 ---
 
-### 4. 👫 Your Friends Section (Home Page)
+<div align="center">
 
-- Display all friends from your JSON file as cards, following the Figma design
-- **Each card must show:**
+Built with ❤️ using **Next.js** · **React** · **Tailwind CSS** · **Recharts**
 
-| Field | Details |
-|---|---|
-| 📸 Picture | Friend's photo |
-| 🧑 Name | Friend's full name |
-| 📅 Days Since Contact | How many days ago you contacted them |
-| 🏷️ Tags | e.g., "college", "work" |
-| 🔴 Status | Background color changes based on status (match Figma) |
-
-- Cards must be shown in a **4-column grid layout on large screens**
-- Clicking a card must navigate the user to that friend's **Detail Page**
-
----
-
-### 5. 👤 Friend Details Page — Layout
-
-This page should have a **two-column layout** (follow the Figma design).
-
-**Left Column — Friend Info Card:**
-
-Show the following details:
-- Profile picture
-- Name
-- Status (with color)
-- Tags
-- Bio
-- Email
-
-Also add these **3 action buttons** (no functionality required for these buttons):
-
-| Button |
-|---|
-| ⏰ Snooze 2 Weeks |
-| 📦 Archive |
-| 🗑️ Delete |
-
----
-
-**Right Column — 3 sections:**
-
-**① Stats Cards (show 3 cards):**
-- Days Since Contact
-- Goal (in days)
-- Next Due Date
-
-**② Relationship Goal Card:**
-- Show the current contact goal
-- Add an **Edit** button
-
-**③ Quick Check-In Card:**
-- Add 3 buttons with icons: **Call**, **Text**, **Video**
-- When clicked, each button adds a new entry to the **Timeline** (see Section 6)
-
----
-
-### 6. ⚡ Friend Details Page — Button Functionality
-
-When a user clicks **Call**, **Text**, or **Video** in the Quick Check-In Card:
-
-✅ A **new timeline entry** is automatically added with:
-- The **current date**
-- A **title** like:
-  - "Call with Alex Johnson"
-  - "Text with Alex Johnson"
-  - "Video with Alex Johnson"
-
-✅ A **toast notification** must appear when any of these buttons is clicked.
-
-
-
----
-
-### 7. 📜 Timeline Page
-
-This page shows the **history of all interactions** (calls, texts, video calls) logged from the Friend Details page.
-
-**This page must have:**
-- A **"Timeline"** heading at the top
-- Timeline entries displayed following the Figma design
-- Each entry must show:
-
-| Field | Details |
-|---|---|
-| 📅 Date | When the interaction happened |
-| 🔣 Icon | Different icon for Call / Text / Video |
-| 📝 Title | e.g., "Call with Sarah", "Text with Mike" |
-
----
-
-### 8. 🦶 Footer
-
-- Design and add a footer section that matches the Figma design
-
----
-
-### 9. 📱 Responsive Design
-
-- The entire website must work correctly on **mobile, tablet, and desktop** screen sizes
-
----
-
-### 10. 🛠️ Other Requirements(Required for marks)
-
-| # | Requirement |
-|---|---|
-| 10.1 | Add a **404 Page** for any unknown/invalid route |
-| 10.2 | Show a **loading animation** while the friends data is being fetched on the Home page |
-| 10.3 | Show a **relevant toast notification** when the user clicks Call, Text, or Video |
-| 10.4 | Make sure **reloading any page after deployment** does not cause an error |
-
----
-
-## 🚀 Challenge Requirements — 10 Marks
-
----
-
-### C1. 📊 Friendship Analytics Page (Stats Page)
-
-- The page must have a **"Friendship Analytics"** heading at the top
-- Add a **Pie Chart** (using Recharts) showing the count of **Call / Text / Video** interactions — match the Figma layout
-
----
-
-### C2. 🔍 Timeline Filter
-
-- Add **filter options** on the Timeline page so users can filter entries by: **Call**, **Text**, or **Video**
-
----
-
-### C3. 📄 GitHub README
-
-Add a well-designed `README.md` to your GitHub repository that includes:
-- Name of your project
-- A short description
-- Technologies you used
-- 3 key features of your project
-
----
-
-## ⭐ Optional (No Marks — Highly Recommended)
-
-These are not required but will make your project stand out:
-
-- **Sort** timeline entries by date (newest / oldest)
-- **Search** timeline entries by friend name or interaction type
-
----
-
-## 🛠️ Technologies to Use
-
-| Technology | Purpose |
-|---|---|
-| **React.js/Next.js** | Build the UI |
-| **React Router DOM/App router(Next.js)** | Handle page navigation |
-| **Tailwind CSS+Any component library** | Styling and responsiveness |
-| **Recharts** | Chart |
-
----
-
-## 🚀 Deployment
-
-Deploy your project on **Vercel**, **Netlify**, **Cloudflare Pages**, or anywhere else before submitting.
-
----
-
-## 📬 Submission
-
-Fill in both links before submitting:
-
-- **Live Link**:
-- **GitHub Repository Link**:
+</div>
