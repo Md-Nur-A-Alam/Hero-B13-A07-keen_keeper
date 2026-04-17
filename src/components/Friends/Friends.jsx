@@ -1,10 +1,11 @@
+import fs from 'fs/promises';
+import path from 'path';
 import FriendCard from './FriendCard/FriendCard';
-import friendsData from '@/../public/friends.json';
-
 
 const Friends = async () => {
-    // const res = await fetch('/friends.json');
-    // const friendsData = await res.json();
+    const filePath = path.join(process.cwd(), 'public', 'friends.json');
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    const friendsData = JSON.parse(fileContent);
 
     return (
         <div>
@@ -16,4 +17,4 @@ const Friends = async () => {
     );
 };
 
-export default Friends;
+export default Friends;

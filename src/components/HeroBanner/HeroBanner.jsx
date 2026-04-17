@@ -1,7 +1,10 @@
+import fs from 'fs/promises';
+import path from 'path';
 
 const HeroBanner = async () => {
-    const res = await fetch('http://localhost:3000/friends.json');
-    const friends = await res.json();
+    const filePath = path.join(process.cwd(), 'public', 'friends.json');
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    const friends = JSON.parse(fileContent);
 
     const totalFriends = friends.length;
     const onTrack = friends.filter(f => f.status === 'on-track').length;
